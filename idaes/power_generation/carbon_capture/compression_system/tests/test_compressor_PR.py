@@ -26,10 +26,10 @@ from idaes.generic_models.properties.core.generic.generic_property import (
 from idaes.core.util.model_statistics import degrees_of_freedom
 
 # Import Unit Model Modules
-# from idaes.power_generation.carbon_capture.compression_system.compressor_PR \
-#       import (CompressionStage, VaneDiffuserType, ImpellerType)
-from compressor_PR \
+from idaes.power_generation.carbon_capture.compression_system.compressor_PR \
       import (CompressionStage, VaneDiffuserType, ImpellerType)
+# from compressor_PR \
+#       import (CompressionStage, VaneDiffuserType, ImpellerType)
 
 # Import Property Package
 from idaes.power_generation.properties.natural_gas_PR import get_prop
