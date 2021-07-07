@@ -247,18 +247,24 @@ VaneDiffuserType.custom}""",
         self.r2 = Var(initialize=0.05,
                       doc="Impeller Tip Radius",
                       units=pyunits.m)
-        self.speed_of_sound = Var(initialize=278.895,
+        self.speed_of_sound = Var(initialize=279.214,
                                   doc="speed of sound",
                                   units=pyunits.m / pyunits.s)
+        self.heat_capacity_ratio = Var(initialize=1.2772,
+                                       doc="heat capacity ratio")
 
         ###########################################################
         self.ratioP[:] = 2.0   # make sure these have a number value
         self.deltaP[:] = 0     # to avoid an error later in initialize
 
         ###########################################################
+
         # Calculate Mach number and tip impeller speed
         @self.Constraint(self.flowsheet().config.time, doc="Mach Number")
         def Ma_con(b, t):
+            # assume single vapor phase.
+            # speed_of_sound = self.control_volume.properties_in[
+            #     t].speed_sound_phase['Vap']
             return b.Ma[t] == b.U2[t] / b.speed_of_sound
 
         @self.Constraint(self.flowsheet().config.time, doc="Rotation Speed "
@@ -398,7 +404,7 @@ VaneDiffuserType.custom}""",
         @self.Expression(self.flowsheet().config.time,
                          doc="Isentropic Head")
         def ys_model(b, t):
-            k_v = 1.2772  # heat capacity ratio
+            k_v = b.heat_capacity_ratio
             a = (k_v - 1) / k_v
             Pd = properties_out[t].pressure
             Ps = properties_in[t].pressure
