@@ -21,6 +21,7 @@ import gzip
 import numpy as np
 
 import idaes
+from idaes.core.util.model_statistics import degrees_of_freedom
 import pyomo.environ as pyo
 from pyomo.common.collections import ComponentSet, ComponentMap
 from pyomo.core.expr.visitor import identify_variables
@@ -533,6 +534,7 @@ def petsc_dae_by_time_element(
                 )
                 # set up the scaling factor suffix
                 _sub_problem_scaling_suffix(m, t_block)
+                assert degrees_of_freedom(t_block) == 0
                 # return t_block
                 with idaeslog.solver_log(solve_log, idaeslog.INFO) as slc:
                     res = initial_solver_obj.solve(t_block, tee=slc.tee)
